@@ -1,0 +1,116 @@
+﻿@model Sistema_de_Facturacion_EPA.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="page-panel">
+    <div class="mb-4">
+        <h2 class="section-title">Panel Principal</h2>
+        <p class="text-muted mb-0">
+            Bienvenido al sistema de facturación EPA. Aquí puedes visualizar el resumen general del negocio.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-1">
+                <h6>Categorías</h6>
+                <h2>@Model.TotalCategorias</h2>
+                <div class="icon-bg"><i class="bi bi-tags-fill"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-2">
+                <h6>Proveedores</h6>
+                <h2>@Model.TotalProveedores</h2>
+                <div class="icon-bg"><i class="bi bi-truck"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-3">
+                <h6>Clientes</h6>
+                <h2>@Model.TotalClientes</h2>
+                <div class="icon-bg"><i class="bi bi-people-fill"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-4">
+                <h6>Productos</h6>
+                <h2>@Model.TotalProductos</h2>
+                <div class="icon-bg"><i class="bi bi-box-seam"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-5">
+                <h6>Facturas</h6>
+                <h2>@Model.TotalFacturas</h2>
+                <div class="icon-bg"><i class="bi bi-receipt-cutoff"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-6">
+                <h6>Compras</h6>
+                <h2>@Model.TotalCompras</h2>
+                <div class="icon-bg"><i class="bi bi-cart-plus-fill"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-7">
+                <h6>Stock Bajo</h6>
+                <h2>@Model.ProductosStockBajo</h2>
+                <div class="icon-bg"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dashboard-card bg-card-8">
+                <h6>Ventas Totales</h6>
+                <h2>₡ @Model.TotalVentas.ToString("N2")</h2>
+                <div class="icon-bg"><i class="bi bi-cash-coin"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Accesos rápidos</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-controller="Factura" asp-action="Create" class="btn btn-success">
+                            <i class="bi bi-plus-circle me-1"></i> Nueva Factura
+                        </a>
+                        <a asp-controller="Compra" asp-action="Create" class="btn btn-primary">
+                            <i class="bi bi-cart-plus me-1"></i> Nueva Compra
+                        </a>
+                        <a asp-controller="Producto" asp-action="Create" class="btn btn-warning">
+                            <i class="bi bi-box2-heart me-1"></i> Nuevo Producto
+                        </a>
+                        <a asp-controller="Cliente" asp-action="Create" class="btn btn-danger">
+                            <i class="bi bi-person-plus me-1"></i> Nuevo Cliente
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Resumen</h5>
+                    <p class="text-muted mb-0">
+                        El sistema permite administrar clientes, proveedores, productos, inventario,
+                        compras, facturación y reportes desde una interfaz moderna y centralizada.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

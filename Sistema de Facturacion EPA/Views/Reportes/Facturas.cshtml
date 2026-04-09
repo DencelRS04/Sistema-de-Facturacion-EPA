@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Sistema_de_Facturacion_EPA.Models.Factura>
+
+@{
+    ViewData["Title"] = "Reporte de Facturas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Reporte de Facturas</h2>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-success">
+        <tr>
+            <th>ID Factura</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Subtotal</th>
+            <th>Impuesto</th>
+            <th>Total</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdFactura</td>
+                <td>@item.Cliente?.NombreCompleto</td>
+                <td>@item.FechaFactura.ToShortDateString()</td>
+                <td>₡ @item.Subtotal.ToString("N2")</td>
+                <td>₡ @item.Impuesto.ToString("N2")</td>
+                <td>₡ @item.Total.ToString("N2")</td>
+                <td>@item.Estado</td>
+            </tr>
+        }
+    </tbody>
+</table>

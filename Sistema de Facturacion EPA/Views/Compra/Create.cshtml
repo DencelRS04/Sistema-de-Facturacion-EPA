@@ -1,0 +1,65 @@
+﻿@model Sistema_de_Facturacion_EPA.ViewModels.CompraViewModel
+
+@{
+    ViewData["Title"] = "Nueva Compra";
+}
+
+<h2>Nueva Compra</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="IdProveedor" class="form-label">Proveedor</label>
+        <select asp-for="IdProveedor" asp-items="Model.Proveedores" class="form-select">
+            <option value="">Seleccione un proveedor</option>
+        </select>
+        <span asp-validation-for="IdProveedor" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaCompra" class="form-label">Fecha de Compra</label>
+        <input asp-for="FechaCompra" type="date" class="form-control" />
+        <span asp-validation-for="FechaCompra" class="text-danger"></span>
+    </div>
+
+    <h4 class="mt-4">Detalle de la Compra</h4>
+
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Costo Unitario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Detalles.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <select asp-for="Detalles[@i].IdProducto" asp-items="Model.Productos" class="form-select">
+                            <option value="">Seleccione un producto</option>
+                        </select>
+                        <span asp-validation-for="Detalles[@i].IdProducto" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="Detalles[@i].Cantidad" class="form-control" />
+                        <span asp-validation-for="Detalles[@i].Cantidad" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="Detalles[@i].CostoUnitario" class="form-control" />
+                        <span asp-validation-for="Detalles[@i].CostoUnitario" class="text-danger"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Guardar Compra</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

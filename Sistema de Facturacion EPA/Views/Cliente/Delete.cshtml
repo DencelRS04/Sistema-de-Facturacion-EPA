@@ -1,0 +1,37 @@
+﻿@model Sistema_de_Facturacion_EPA.Models.Cliente
+
+@{
+    ViewData["Title"] = "Eliminar Cliente";
+}
+
+<h2>Eliminar Cliente</h2>
+
+<div class="alert alert-danger">
+    ¿Seguro que deseas eliminar este cliente?
+</div>
+
+<div class="mb-3">
+    <label class="form-label">ID</label>
+    <input class="form-control" value="@Model.IdCliente" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Nombre Completo</label>
+    <input class="form-control" value="@Model.NombreCompleto" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Teléfono</label>
+    <input class="form-control" value="@Model.Telefono" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Correo</label>
+    <input class="form-control" value="@Model.Correo" readonly />
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="IdCliente" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

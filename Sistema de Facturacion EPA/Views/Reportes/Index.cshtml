@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Reportes";
+}
+
+<h2 class="mb-4">Módulo de Reportes</h2>
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-success">
+            <div class="card-body text-center">
+                <h5 class="card-title">Facturas</h5>
+                <p class="card-text">Reporte general de facturas registradas.</p>
+                <a asp-action="Facturas" class="btn btn-success">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-primary">
+            <div class="card-body text-center">
+                <h5 class="card-title">Productos</h5>
+                <p class="card-text">Reporte general de productos y categorías.</p>
+                <a asp-action="Productos" class="btn btn-primary">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-warning">
+            <div class="card-body text-center">
+                <h5 class="card-title">Inventario</h5>
+                <p class="card-text">Consulta de existencias y stock mínimo.</p>
+                <a asp-action="Inventario" class="btn btn-warning text-dark">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-info">
+            <div class="card-body text-center">
+                <h5 class="card-title">Compras</h5>
+                <p class="card-text">Listado general de compras realizadas.</p>
+                <a asp-action="Compras" class="btn btn-info text-dark">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+</div>
