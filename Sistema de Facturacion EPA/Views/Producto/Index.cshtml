@@ -4,38 +4,45 @@
     ViewData["Title"] = "Productos";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Productos</h2>
-    <a asp-action="Create" class="btn btn-success">Nuevo Producto</a>
-</div>
+<div class="page-panel">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title mb-1">Productos</h2>
+            <p class="text-muted mb-0">Gestión del catálogo de productos.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+        </a>
+    </div>
 
-<table class="table table-bordered table-striped">
-    <thead class="table-success">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio Venta</th>
-            <th>Impuesto</th>
-            <th>Categoría</th>
-            <th style="width: 180px;">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
             <tr>
-                <td>@item.IdProducto</td>
-                <td>@item.Nombre</td>
-                <td>@item.Descripcion</td>
-                <td>₡ @item.PrecioVenta.ToString("N2")</td>
-                <td>@item.Impuesto %</td>
-                <td>@item.CategoriaProducto?.Nombre</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdProducto" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.IdProducto" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio Venta</th>
+                <th>Impuesto</th>
+                <th>Categoría</th>
+                <th style="width:180px;">Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdProducto</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>₡ @item.PrecioVenta.ToString("N2")</td>
+                    <td>@item.Impuesto %</td>
+                    <td>@item.CategoriaProducto?.Nombre</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdProducto" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.IdProducto" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

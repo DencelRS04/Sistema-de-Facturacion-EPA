@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Sistema_de_Facturacion_EPA.Data;
-using Sistema_de_Facturacion_EPA.Models;
-using Sistema_de_Facturacion_EPA.ViewModels;
 
-namespace Sistema_de_Facturacio_EPA.Controllers
+using Sistema_de_Facturacion_EPA.Data;
+using Sistema_de_Facturacion_EPA.ViewModels;
+using System.Text.Json;
+
+namespace Sistema_de_Facturacion_EPA.Controllers
 {
     public class FacturaController : Controller
     {
@@ -55,46 +57,44 @@ namespace Sistema_de_Facturacio_EPA.Controllers
                 return View(vm);
             }
 
-            decimal subtotal = vm.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario);
-            decimal impuesto = 0;
-
-            foreach (var item in vm.Detalles)
+            try
             {
-                var producto = await _context.Productos.FindAsync(item.IdProducto);
-                if (producto != null)
+                var detallesJson = JsonSerializer.Serialize(
+                    vm.Detalles.Select(d => new
+                    {
+                        IdProducto = d.IdProducto,
+                        Cantidad = d.Cantidad
+                    })
+                );
+
+                var pIdCliente = new SqlParameter("@IdCliente", vm.IdCliente);
+                var pFechaFactura = new SqlParameter("@FechaFactura", vm.FechaFactura);
+                var pDetalles = new SqlParameter("@Detalles", detallesJson);
+
+                var pIdFactura = new SqlParameter("@IdFactura", System.Data.SqlDbType.Int)
                 {
-                    impuesto += (item.Cantidad * item.PrecioUnitario) * (producto.Impuesto / 100);
-                }
-            }
-
-            var factura = new Factura
-            {
-                IdCliente = vm.IdCliente,
-                FechaFactura = vm.FechaFactura,
-                Subtotal = subtotal,
-                Impuesto = impuesto,
-                Total = subtotal + impuesto,
-                Estado = "Pendiente"
-            };
-
-            _context.Facturas.Add(factura);
-            await _context.SaveChangesAsync();
-
-            foreach (var item in vm.Detalles)
-            {
-                var detalle = new FacturaDetalle
-                {
-                    IdFactura = factura.IdFactura,
-                    IdProducto = item.IdProducto,
-                    Cantidad = item.Cantidad,
-                    PrecioUnitario = item.PrecioUnitario
+                    Direction = System.Data.ParameterDirection.Output
                 };
 
-                _context.FacturaDetalles.Add(detalle);
-            }
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC dbo.sp_RegistrarFactura @IdCliente, @FechaFactura, @Detalles, @IdFactura OUTPUT",
+                    pIdCliente, pFechaFactura, pDetalles, pIdFactura
+                );
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                var idFacturaGenerada = (int)pIdFactura.Value;
+
+                return RedirectToAction(nameof(Details), new { id = idFacturaGenerada });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Ocurrió un error al guardar la factura: " + ex.Message);
+
+                if (vm.Detalles == null || vm.Detalles.Count == 0)
+                    vm.Detalles = new List<FacturaDetalleViewModel> { new FacturaDetalleViewModel() };
+
+                await CargarListas(vm);
+                return View(vm);
+            }
         }
 
         public async Task<IActionResult> Details(int id)

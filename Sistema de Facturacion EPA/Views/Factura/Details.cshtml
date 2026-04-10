@@ -4,75 +4,79 @@
     ViewData["Title"] = "Detalle de Factura";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Detalle de Factura</h2>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
-</div>
+<div class="page-panel">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">Detalle de Factura</h2>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-3">
-                <strong>ID Factura:</strong><br />
-                @Model.IdFactura
-            </div>
-            <div class="col-md-3">
-                <strong>Cliente:</strong><br />
-                @Model.Cliente?.NombreCompleto
-            </div>
-            <div class="col-md-3">
-                <strong>Fecha:</strong><br />
-                @Model.FechaFactura.ToShortDateString()
-            </div>
-            <div class="col-md-3">
-                <strong>Estado:</strong><br />
-                @Model.Estado
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">ID Factura</label>
+                    <input class="form-control" value="@Model.IdFactura" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Cliente</label>
+                    <input class="form-control" value="@Model.Cliente?.NombreCompleto" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Fecha</label>
+                    <input class="form-control" value="@Model.FechaFactura.ToShortDateString()" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <input class="form-control" value="@Model.Estado" readonly />
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<h4>Productos</h4>
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th>ID Producto</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total Línea</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Detalles)
+            {
+                <tr>
+                    <td>@item.IdProducto</td>
+                    <td>@item.Producto?.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>₡ @item.PrecioUnitario.ToString("N2")</td>
+                    <td>₡ @((item.Cantidad * item.PrecioUnitario).ToString("N2"))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<table class="table table-bordered table-striped">
-    <thead class="table-success">
-        <tr>
-            <th>ID Producto</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Total Línea</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Detalles)
-        {
-            <tr>
-                <td>@item.IdProducto</td>
-                <td>@item.Producto?.Nombre</td>
-                <td>@item.Cantidad</td>
-                <td>₡ @item.PrecioUnitario.ToString("N2")</td>
-                <td>₡ @((item.Cantidad * item.PrecioUnitario).ToString("N2"))</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="row justify-content-end">
-    <div class="col-md-4">
-        <table class="table table-bordered">
-            <tr>
-                <th>Subtotal</th>
-                <td>₡ @Model.Subtotal.ToString("N2")</td>
-            </tr>
-            <tr>
-                <th>Impuesto</th>
-                <td>₡ @Model.Impuesto.ToString("N2")</td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <td><strong>₡ @Model.Total.ToString("N2")</strong></td>
-            </tr>
-        </table>
+    <div class="row justify-content-end mt-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table mb-0">
+                        <tr>
+                            <th>Subtotal</th>
+                            <td>₡ @Model.Subtotal.ToString("N2")</td>
+                        </tr>
+                        <tr>
+                            <th>Impuesto</th>
+                            <td>₡ @Model.Impuesto.ToString("N2")</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td><strong>₡ @Model.Total.ToString("N2")</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

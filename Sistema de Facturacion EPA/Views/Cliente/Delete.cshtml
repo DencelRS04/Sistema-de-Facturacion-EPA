@@ -4,34 +4,47 @@
     ViewData["Title"] = "Eliminar Cliente";
 }
 
-<h2>Eliminar Cliente</h2>
+<div class="page-panel">
+    <h2 class="section-title">Eliminar Cliente</h2>
 
-<div class="alert alert-danger">
-    ¿Seguro que deseas eliminar este cliente?
+    <div class="alert alert-danger">
+        ¿Seguro que deseas eliminar este cliente?
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre Completo</label>
+                    <input class="form-control" value="@Model.NombreCompleto" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Teléfono</label>
+                    <input class="form-control" value="@Model.Telefono" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Correo</label>
+                    <input class="form-control" value="@Model.Correo" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Fecha Registro</label>
+                    <input class="form-control" value="@Model.FechaRegistro.ToShortDateString()" readonly />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Dirección</label>
+                    <input class="form-control" value="@Model.Direccion" readonly />
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post" class="mt-4 d-flex gap-2">
+                <input type="hidden" asp-for="IdCliente" />
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
 </div>
-
-<div class="mb-3">
-    <label class="form-label">ID</label>
-    <input class="form-control" value="@Model.IdCliente" readonly />
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Nombre Completo</label>
-    <input class="form-control" value="@Model.NombreCompleto" readonly />
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Teléfono</label>
-    <input class="form-control" value="@Model.Telefono" readonly />
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Correo</label>
-    <input class="form-control" value="@Model.Correo" readonly />
-</div>
-
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="IdCliente" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>

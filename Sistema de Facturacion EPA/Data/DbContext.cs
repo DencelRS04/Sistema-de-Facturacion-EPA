@@ -33,6 +33,23 @@ namespace Sistema_de_Facturacion_EPA.Data
             modelBuilder.Entity<Factura>().HasKey(x => x.IdFactura);
             modelBuilder.Entity<FacturaDetalle>().HasKey(x => x.IdFacturaDetalle);
 
+            modelBuilder.Entity<Producto>()
+                .ToTable("Producto", tb => tb.UseSqlOutputClause(false));
+
+            modelBuilder.Entity<Compra>()
+                .ToTable("Compra", tb => tb.UseSqlOutputClause(false));
+
+            modelBuilder.Entity<CompraDetalle>()
+                .ToTable("CompraDetalle", tb => tb.UseSqlOutputClause(false));
+
+            modelBuilder.Entity<Factura>()
+                .ToTable("Factura", tb => tb.UseSqlOutputClause(false));
+
+            modelBuilder.Entity<FacturaDetalle>()
+                .ToTable("FacturaDetalle", tb => tb.UseSqlOutputClause(false));
+
+
+
             modelBuilder.Entity<Inventario>()
                 .HasOne(i => i.Producto)
                 .WithMany()
