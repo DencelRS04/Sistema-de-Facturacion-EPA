@@ -72,13 +72,35 @@ namespace Sistema_de_Facturacion_EPA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var proveedor = await _context.Proveedores.FindAsync(id);
-            if (proveedor == null)
-                return NotFound();
+            try
+            {
+                var proveedor = await _context.Proveedores.FindAsync(id);
 
-            _context.Proveedores.Remove(proveedor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                if (proveedor == null)
+                {
+                    TempData["Error"] = "El proveedor no existe.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                bool tieneCompras = await _context.Compras.AnyAsync(c => c.IdProveedor == id);
+
+                if (tieneCompras)
+                {
+                    TempData["Error"] = "No se puede eliminar el proveedor porque tiene compras registradas.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _context.Proveedores.Remove(proveedor);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Proveedor eliminado correctamente.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Ocurrió un error al eliminar el proveedor: " + ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

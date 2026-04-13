@@ -84,12 +84,42 @@ namespace Sistema_de_Facturacion_EPA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null) return NotFound();
+            try
+            {
+                var producto = await _context.Productos.FindAsync(id);
 
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                if (producto == null)
+                {
+                    TempData["Error"] = "El producto no existe.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                bool tieneInventario = await _context.Inventarios.AnyAsync(i => i.IdProducto == id);
+                bool tieneCompras = await _context.CompraDetalles.AnyAsync(cd => cd.IdProducto == id);
+                bool tieneFacturas = await _context.FacturaDetalles.AnyAsync(fd => fd.IdProducto == id);
+
+                if (tieneInventario || tieneCompras || tieneFacturas)
+                {
+                    TempData["Error"] = "No se puede eliminar el producto porque tiene registros relacionados.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _context.Productos.Remove(producto);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Producto eliminado correctamente.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                TempData["Error"] = "No se puede eliminar el producto porque tiene registros relacionados.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Ocurrió un error al eliminar el producto: " + ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private async Task CargarCategorias(int? seleccionada = null)
